@@ -11,20 +11,38 @@ const Registration = () => {
   const [DOB ,setDOB] = useState("");
   const [gender, setGender] = useState("Male");
   const [PhoneNo, setPhoneNo] = useState("");
-  const [Address , setAddress] = useState("");
+  const [Address, setAddress] = useState("");
+  const [firstNameerror, setfirstNameerror] = useState("");
+  const [LastNameerror, setLastNameerror] = useState("");
+  const [userNameerror, setuserNameerror] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-
-  const QualificationArr = {
-    {Qualification}
-  }
+  
 
   const onFirstnameChangeHandler = (e) => {
+    if (e.target.value.trim().length === 0 ){
+         setfirstNameerror("Please enter First Name");
+       } else {
+         setfirstNameerror("");
+       }
     setFirstname(e.target.value);
   };
   const onLastnameChangeHandler = (e) => {
+    if (e.target.value.trim().length === 0) {
+      setLastNameerror("Please enter Last Name");
+    } else {
+      setLastNameerror("");
+    }
     setLastname(e.target.value);
   };
   const onUsernameChangeHandler = (e) => {
+ if (e.target.value.trim().length === 0) {
+   setuserNameerror("Please enter Username");
+ } else {
+   setuserNameerror("");
+ }
+
     setUsername(e.target.value);
   };
     const onPhoneNoChangeHandler = (e) => {
@@ -32,9 +50,24 @@ const Registration = () => {
     };
   ;
   const onEmailChangeHandler = (e) => {
+    if (e.target.value.trim().length === 0) {
+      setEmailError("Please enter email");
+    }
+    else if (!e.target.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
     setEmail(e.target.value);
   };
   const onPasswordChangeHandler = (e) => {
+    if (e.target.value.trim().length === 0) {
+      setPasswordError("please enter a Password")
+    } else if (e.target.value.trim().length < 8) { 
+      setPasswordError("Password must be at least 8 characters")
+    } else 
+    
+
     setPassword(e.target.value);
   };
   const onGenderChangeHandler = (event) => {
@@ -83,6 +116,9 @@ const Registration = () => {
               name="Firstname"
               placeholder="firstName"
             />
+            {firstNameerror && (
+              <div style={{ color: "red" }}>{firstNameerror}</div>
+            )}
           </div>
           <div className="input-box">
             <label>LastName </label>
@@ -93,6 +129,9 @@ const Registration = () => {
               name="Lastname"
               placeholder="LastName"
             />
+            {LastNameerror && (
+              <div style={{ color: "red" }}>{LastNameerror}</div>
+            )}
           </div>
           <div className="input-box">
             <label> Username </label>
@@ -103,6 +142,9 @@ const Registration = () => {
               name="Username"
               placeholder="UserName"
             />
+            {userNameerror && (
+              <div style={{ color: "red" }}>{userNameerror}</div>
+            )}
           </div>
           <div className="input-box">
             <label>Email</label>
@@ -113,6 +155,7 @@ const Registration = () => {
               name="Email"
               placeholder="Enter your email"
             />
+            {emailError && <div style={{ color: "red" }}>{emailError}</div>}
           </div>
           <div className="input-box">
             <label> Phone Number </label>
@@ -169,9 +212,8 @@ const Registration = () => {
             Female
           </div>
           <div className="input-box">
-          <CascadingDropdown/>
-            
-           </div>
+            <CascadingDropdown />
+          </div>
           <div className="input-box">
             <label>Address : </label>
             <textarea

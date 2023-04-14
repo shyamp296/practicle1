@@ -4,27 +4,26 @@ import { Link } from "react-router-dom";
 const Login = () => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
-  const [isvalid , setisValid] = useState("true")
+  const [isvalid, setisValid] = useState("true")
+  const [emailError, setEmailError] = useState("");
   
   const onEmailChangeHandler = (e) => {
      
-      if (e.target.value.trim().length > 0) {
-        setisValid(true);
-      }
+       if (!e.target.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+         setEmailError("Please enter a valid email address");
+       } else {
+         setEmailError("");
+       }
      setEmail(e.target.value);
    };
    const onPasswordChangeHandler = (e) => {
      setPassword(e.target.value);
    };
-  const onLoginHandler = () => { 
-      if (!enteredEmail.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
-      setEmailError('Please enter a valid email address');
-    } else {
-      setEmailError('');
-    }
+  const onLoginHandler = (e) => { 
+    e.preventDefault();
   };
 
-  }
+  
   
   return (
     <>
@@ -36,14 +35,13 @@ const Login = () => {
               <label> Email </label>
               <input
                 
-                style={{borderColor : !isvalid ? 'red' : '#9b59b6'}}
                 type="email"
                 name="Email"
                 placeholder="Enter your email"
                 value={Email}
                 onChange={onEmailChangeHandler}
               />
-              
+              {emailError && <div style={{ color: "red" }}>{emailError}</div>}
             </div>
             <div className="input-box">
               <label> Password </label>
