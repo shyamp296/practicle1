@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "./registration/Registration.css"
+import "./registration/Registration.css";
 // const countriesData = [
 //   {
 //     name: "Germany",
@@ -23,8 +23,6 @@ import "./registration/Registration.css"
 //   },
 // ];
 
-
-
 const CascadingDropdown = () => {
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
@@ -32,13 +30,12 @@ const CascadingDropdown = () => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const handleCountryChange = (event) => {
-    const selectedCountry = event.target.value;
+  const handleCountryChange = (e) => {
+    const selectedCountry = e.target.value;
     setCountry(selectedCountry);
-    // You can replace these hard-coded lists with an API call to get the states and cities for the selected country
     const countryStates =
       selectedCountry === "India"
-        ? ["gujrat", "UP", "MP"]
+        ? ["Gujrat", "Madhya Pradesh", "Uttar Pradesh"]
         : ["Ontario", "Quebec", "British Columbia"];
     setStates(countryStates);
     setState("");
@@ -46,17 +43,30 @@ const CascadingDropdown = () => {
     setCity("");
   };
 
-  const handleStateChange = (event) => {
-    const selectedState = event.target.value;
+  const handleStateChange = (e) => {
+    const selectedState = e.target.value;
     setState(selectedState);
-    // You can replace these hard-coded lists with an API call to get the cities for the selected state
     const stateCities =
       selectedState === "Gujrat"
-        ? ["rajkot", "Ahemdabad", "surat"]
-        : selectedState === "MP"
-        ? ["Los Angeles", "San Francisco", "San Diego"]
-        : selectedState === "UP"
-        ? ["Houston", "Dallas", "Austin"]
+        ? ["Ahmedabad", "Amreli", "Rajkot", "Surat", "Bharuch", "Bhavnagar"]
+        : selectedState === "Madhya Pradesh"
+        ? [
+            "Alirajpur",
+            "Anuppur",
+            "Ashok Nagar",
+            "Balaghat",
+            "Barwani",
+            "Betul",
+          ]
+        : selectedState === "Uttar Pradesh"
+        ? [
+            "Agra",
+            "Allahabad",
+            "Aligarh",
+            "Ambedkar Nagar",
+            "Auraiya",
+            "Azamgarh",
+          ]
         : selectedState === "Ontario"
         ? ["Toronto", "Ottawa", "Mississauga"]
         : selectedState === "Quebec"
@@ -68,18 +78,27 @@ const CascadingDropdown = () => {
     setCity("");
   };
 
-  const handleCityChange = (event) => {
-    const selectedCity = event.target.value;
+  const handleCityChange = (e) => {
+    const selectedCity = e.target.value;
     setCity(selectedCity);
   };
 
+  const Onchangehandler = () => {
+    const data = {
+      country: country,
+      state: state,
+      city: city,
+    };
+    console.log(data);
+  
+  };
   return (
-    <div>
+    <div onChange={Onchangehandler}>
       <label>
         Country:
-        <select value={country} onChange={handleCountryChange}>
+        <select value={country} onChange={{ handleCountryChange }}>
           <option value="">--Please choose a country--</option>
-          <option value="India">USA</option>
+          <option value="India">India</option>
           <option value="Canada">Canada</option>
         </select>
       </label>
@@ -112,4 +131,3 @@ const CascadingDropdown = () => {
 };
 
 export default CascadingDropdown;
-

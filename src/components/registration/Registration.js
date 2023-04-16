@@ -1,106 +1,118 @@
 import React, { useState } from "react";
 import "./Registration.css";
-import CascadingDropdown from "../Dropdown"
+import CascadingDropdown from "../Dropdown";  
 
 const Registration = () => {
-  const [Firstname, setFirstname] = useState("");
-  const [LastName, setLastname] = useState("");
-  const [Username, setUsername] = useState("");
-  const [Email, setEmail] = useState("");
-  const [Password, setPassword] = useState("");
-  const [DOB ,setDOB] = useState("");
-  const [gender, setGender] = useState("Male");
-  const [PhoneNo, setPhoneNo] = useState("");
-  const [Address, setAddress] = useState("");
-  const [firstNameerror, setfirstNameerror] = useState("");
-  const [LastNameerror, setLastNameerror] = useState("");
-  const [userNameerror, setuserNameerror] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  // const [Firstname, setFirstname] = useState("");
+  // const [LastName, setLastname] = useState("");
+  // const [Username, setUsername] = useState("");
+  // const [Email, setEmail] = useState("");
+  // const [Password, setPassword] = useState("");
+  // const [DOB ,setDOB] = useState("");
+  // const [gender, setGender] = useState("Male");
+  // const [PhoneNo, setPhoneNo] = useState("");
+  // const [Address, setAddress] = useState("");
+  // const [firstNameerror, setfirstNameerror] = useState("");
+  // const [LastNameerror, setLastNameerror] = useState("");
+  // const [userNameerror, setuserNameerror] = useState("");
+  // const [emailError, setEmailError] = useState("");
 
-  
+  const [FormData, setFormData] = useState({
+    Firstname: "",
+    LastName: "",
+    Username: "",
+    Email: "",
+    Password: "",
+    ConfirmPassword: "",
+    DOB: "",
+    gender: "",
+    PhoneNo: "",
+    Address: "",
+  });
+  const [errors, setErrors] = useState({});
 
-  const onFirstnameChangeHandler = (e) => {
-    if (e.target.value.trim().length === 0 ){
-         setfirstNameerror("Please enter First Name");
-       } else {
-         setfirstNameerror("");
-       }
-    setFirstname(e.target.value);
-  };
-  const onLastnameChangeHandler = (e) => {
-    if (e.target.value.trim().length === 0) {
-      setLastNameerror("Please enter Last Name");
-    } else {
-      setLastNameerror("");
-    }
-    setLastname(e.target.value);
-  };
-  const onUsernameChangeHandler = (e) => {
- if (e.target.value.trim().length === 0) {
-   setuserNameerror("Please enter Username");
- } else {
-   setuserNameerror("");
- }
-
-    setUsername(e.target.value);
-  };
-    const onPhoneNoChangeHandler = (e) => {
-      setPhoneNo(e.target.value);
-    };
-  ;
-  const onEmailChangeHandler = (e) => {
-    if (e.target.value.trim().length === 0) {
-      setEmailError("Please enter email");
-    }
-    else if (!e.target.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
-      setEmailError("Please enter a valid email address");
-    } else {
-      setEmailError("");
-    }
-    setEmail(e.target.value);
-  };
-  const onPasswordChangeHandler = (e) => {
-    if (e.target.value.trim().length === 0) {
-      setPasswordError("please enter a Password")
-    } else if (e.target.value.trim().length < 8) { 
-      setPasswordError("Password must be at least 8 characters")
-    } else 
+  const onChangeHandler = (e) => {
+   
+    setFormData({
+      ...FormData,
+      [e.target.name]: e.target.value,
+    });
     
 
-    setPassword(e.target.value);
+    setErrors({
+      ...errors,
+      [e.target.name]: null,
+    });
   };
-  const onGenderChangeHandler = (event) => {
-    setGender(event.target.value);
-  };
-   const onDOBChangeHandler = (event) => {
-     setDOB(event.target.value);
-   };
-   const onAddressChangeHandler = (event) => {
-     setAddress(event.target.value);
-   };
-  
 
- 
-  const registerData = {
-    Firstname: Firstname,
-    LastName: LastName,
-    Username: Username,
-    Email: Email,
-    Password: Password,
-    DOB: new Date(DOB),
-    Gender: gender,
-    PhoneNo: PhoneNo,
-    Address : Address
-  };
-  console.log(
-    "🚀 ~ file: Registration.js:27 ~ Registration ~ registerData:",
-    registerData
-  );
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
 
-  const onSubmitHandler = () => {
-    
-  }
+    const errors = validate(FormData);
+
+    if(!errors){
+      console.log("dsfjgsdjhsgd");
+    }else {
+    setErrors(errors);
+    return
+  } 
+};
+
+  const validate = (data) => {
+    const errors = {};
+
+    // Firstname Validation
+    if (!data.Firstname) {
+      errors.Firstname = "Firstname is required";
+    } else {
+      errors.Firstname = "";
+    }
+
+    // LastName Validation
+    if (!data.LastName) {
+      errors.LastName = "LastName is required";
+    } else {
+      errors.LastName = "";
+    }
+
+    // Username Validation
+    if (!data.Username) {
+      errors.Username = "Username is required";
+    } else {
+      errors.Username = "";
+    }
+
+    // Email Validation
+    if (!data.Email) {
+      errors.Email = "email is required";
+    }
+    else if (!data.Email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+      errors.Email = "Please enter a valid email address";
+    } 
+
+    //Password validation
+    if (!data.Password) {
+      errors.Password = "Password is required";
+    } else if (!data.Password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)) {
+      console.log(data.Password)
+      errors.Password = "Password length is less than 8 digit";
+    } else {
+      errors.Password = "";
+    }
+
+    //Confirm Password Validation
+    if (!data.ConfirmPassword) {
+      errors.ConfirmPassword = "Confirm password is required";
+    } else if (!data.ConfirmPassword.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)) {
+      errors.ConfirmPassword = "ConfirmPassword length is less than 8 digit";
+    } else if (data.Password !== data.ConfirmPassword) {
+      errors.ConfirmPassword = "Passwords do not match";
+    } else {
+      errors.ConfirmPassword = "";
+    }
+
+    return errors;
+  };
 
   return (
     <div className="container">
@@ -111,59 +123,59 @@ const Registration = () => {
             <label> Firstname </label>
             <input
               type="text"
-              value={Firstname}
-              onChange={onFirstnameChangeHandler}
+              value={FormData.Firstname}
+              onChange={onChangeHandler}
               name="Firstname"
               placeholder="firstName"
             />
-            {firstNameerror && (
-              <div style={{ color: "red" }}>{firstNameerror}</div>
+            {errors.Firstname && (
+              <div style={{ color: "red" }}>{errors.Firstname}</div>
             )}
           </div>
           <div className="input-box">
             <label>LastName </label>
             <input
               type="text"
-              value={LastName}
-              onChange={onLastnameChangeHandler}
-              name="Lastname"
+              value={FormData.LastName}
+              onChange={onChangeHandler}
+              name="LastName"
               placeholder="LastName"
             />
-            {LastNameerror && (
-              <div style={{ color: "red" }}>{LastNameerror}</div>
+            {errors.LastName && (
+              <div style={{ color: "red" }}>{errors.LastName}</div>
             )}
           </div>
           <div className="input-box">
             <label> Username </label>
             <input
               type="text"
-              value={Username}
-              onChange={onUsernameChangeHandler}
+              value={FormData.Username}
+              onChange={onChangeHandler}
               name="Username"
               placeholder="UserName"
             />
-            {userNameerror && (
-              <div style={{ color: "red" }}>{userNameerror}</div>
+            {errors.Username && (
+              <div style={{ color: "red" }}>{errors.Username}</div>
             )}
           </div>
           <div className="input-box">
             <label>Email</label>
             <input
               type="email"
-              value={Email}
-              onChange={onEmailChangeHandler}
+              value={FormData.Email}
+              onChange={onChangeHandler}
               name="Email"
               placeholder="Enter your email"
             />
-            {emailError && <div style={{ color: "red" }}>{emailError}</div>}
+            {errors.Email && <div style={{ color: "red" }}>{errors.Email}</div>}
           </div>
           <div className="input-box">
             <label> Phone Number </label>
             <input
               type="number"
-              value={PhoneNo}
-              onChange={onPhoneNoChangeHandler}
-              name="Phone Number"
+              value={FormData.PhoneNo}
+              onChange={onChangeHandler}
+              name="PhoneNo"
               placeholder="Phone Number"
             />
           </div>
@@ -172,53 +184,62 @@ const Registration = () => {
             <input
               type="password"
               name="Password"
-              value={Password}
-              onChange={onPasswordChangeHandler}
+              value={FormData.Password}
+              onChange={onChangeHandler}
               placeholder="Enter your Password"
             />
+             {errors.Password && (
+              <div style={{ color: "red" }}>{errors.Password}</div>
+            )}
           </div>
           <div className="input-box">
             <label> Confirm Password </label>
             <input
               type="password"
-              name="Confirm Password"
+              name="ConfirmPassword"
+              value={FormData.ConfirmPassword}
+              onChange={onChangeHandler}
               placeholder="Confirm your password"
             />
+             {errors.ConfirmPassword && (
+              <div style={{ color: "red" }}>{errors.ConfirmPassword}</div>
+            )}
           </div>
           <div className="input-box">
             <label> DOB </label>
             <input
               type="date"
-              value={DOB}
-              onChange={onDOBChangeHandler}
+              value={FormData.DOB}
+              onChange={onChangeHandler}
               name="DOB"
             />
           </div>
-          <div className="input-box" onChange={onGenderChangeHandler}>
+          <div className="input-box" >
             <label> Gender : </label>
             <input
               type="radio"
               value="Male"
               name="gender"
-              checked={gender === "Male"}
+              onChange={onChangeHandler}
+              checked={FormData.gender === "Male"}
             />
             Male
             <input
               type="radio"
               value="Female"
               name="gender"
-              checked={gender === "Female"}
+              onChange={onChangeHandler}
+              checked={FormData.gender === "Female"}
             />
             Female
           </div>
           <div className="input-box">
-            <CascadingDropdown />
           </div>
           <div className="input-box">
             <label>Address : </label>
             <textarea
-              onChange={onAddressChangeHandler}
-              value={Address}
+              onChange={onChangeHandler}
+              value={FormData.Address}
               name="Address"
             ></textarea>
           </div>
