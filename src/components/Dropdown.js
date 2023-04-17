@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "./registration/Registration.css";
+import "./Dropdown.css";
 // const countriesData = [
 //   {
 //     name: "Germany",
@@ -31,7 +31,10 @@ const CascadingDropdown = () => {
   const [cities, setCities] = useState([]);
 
   const handleCountryChange = (e) => {
+
     const selectedCountry = e.target.value;
+    console.log("🚀 ~ file: Dropdown.js:36 ~ handleCountryChange ~ selectedCountry:", selectedCountry)
+  
     setCountry(selectedCountry);
     const countryStates =
       selectedCountry === "India"
@@ -45,6 +48,7 @@ const CascadingDropdown = () => {
 
   const handleStateChange = (e) => {
     const selectedState = e.target.value;
+    console.log("🚀 ~ file: Dropdown.js:51 ~ handleStateChange ~ selectedState:", selectedState)
     setState(selectedState);
     const stateCities =
       selectedState === "Gujrat"
@@ -80,23 +84,25 @@ const CascadingDropdown = () => {
 
   const handleCityChange = (e) => {
     const selectedCity = e.target.value;
+    console.log("🚀 ~ file: Dropdown.js:87 ~ handleCityChange ~ selectedCity:", selectedCity)
     setCity(selectedCity);
+    
   };
 
   const Onchangehandler = () => {
     const data = {
-      country: country,
-      state: state,
-      city: city,
+      country,
+      state,
+      city,
     };
     console.log(data);
   
   };
   return (
-    <div onChange={Onchangehandler}>
+    <div onChange={Onchangehandler} className="Dropdown">
       <label>
         Country:
-        <select value={country} onChange={{ handleCountryChange }}>
+        <select value={country} onChange={handleCountryChange }>
           <option value="">--Please choose a country--</option>
           <option value="India">India</option>
           <option value="Canada">Canada</option>
